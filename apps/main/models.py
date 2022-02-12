@@ -50,7 +50,7 @@ class Movie(models.Model):
     memorandum = models.DateField('Меморандум', blank=True, null=True)
     description = models.TextField('Описание', blank=True, null=True)
     start_date = models.DateField('С даты')
-    premier = models.BooleanField('ПРемьера', default=False)
+    premier = models.BooleanField('Премьера', default=False)
     carousel = models.ImageField('Изображние для карусели',
         null=True, blank=True, upload_to='images/carousel/%y/%m' )
     trailer = models.FileField('Трейлер', null=True, blank=True)
