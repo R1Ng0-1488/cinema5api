@@ -5,6 +5,8 @@ from tabnanny import verbose
 from venv import create
 from django.db import models
 
+from .managers import AvailableSession
+
 
 class City(models.Model):
     """Модель городов"""
@@ -36,6 +38,7 @@ class Movie(models.Model):
         (3, '16+'),
         (4, '18+') 
     )
+    objects = AvailableSession.as_manager()
     
     name = models.CharField('Название', max_length=100)
     age_limit = models.IntegerField('Ввозрастное ограничение', 
