@@ -24,3 +24,10 @@ class AvailableSession(models.QuerySet):
             start_date__gt=now.date(),
             session__isnull=False 
         )
+
+    def movies_date(self, date):
+        now = timezone.now()
+        kwargs = {'session__date': date}
+        if date == now.date():
+            kwargs['session__time__gte'] = now.time()
+        return self.filter(**kwargs).distinct()
