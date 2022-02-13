@@ -1,5 +1,6 @@
 from django.utils import timezone
 from django.core.exceptions import ValidationError
+from django.db.utils import IntegrityError
 from django.core.files import File
 
 from unittest import mock
@@ -14,13 +15,13 @@ class TestCityModel:
     def create_initial(self):
         return City.objects.create(name='One', slug='one')
     
-    def test_name_cannot_bo_more_then_100_letters(self):
+    def test_name_cannot_bo_more_then_100_letters(self, db):
         city = City(name='a' * 101, slug='one')
         with pytest.raises(ValidationError):
             city.full_clean()
 
-    def test_slug_cannot_bo_more_then_100_letters(self):
-        city = City(slug='a' * 101, name='one')
+    def test_slug_cannot_bo_more_then_100_letters(self, db):
+        city = City(slug='b' * 101, name='one1')
         with pytest.raises(ValidationError):
             city.full_clean()
 
@@ -39,6 +40,12 @@ class TestCityModel:
     def test_city_default_values(self):
         city = City(name='one')
         assert city.is_active is True
+
+    @pytest.mark.django_db
+    def test_city_name_unique(self):
+        City.objects.create(name='one', slug='one')
+        with pytest.raises(IntegrityError):
+            City.objects.create(name='one', slug='one')
 
 
 class TestMovieModel:

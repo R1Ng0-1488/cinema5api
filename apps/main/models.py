@@ -11,8 +11,9 @@ from .managers import AvailableSession
 class City(models.Model):
     """Модель городов"""
     name = models.CharField('Город', 
+        max_length=100, unique=True,)
+    slug = models.SlugField('Ссылка', unique=True, 
         max_length=100)
-    slug = models.SlugField('Ссылка', max_length=100)
     movies = models.ManyToManyField('Movie',
         verbose_name='Фильмы')
     is_active = models.BooleanField('Активен', default=True)

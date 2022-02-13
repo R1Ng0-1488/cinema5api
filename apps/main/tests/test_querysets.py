@@ -109,13 +109,13 @@ class TestAvailbaMovieQuerySet:
         assert movies_today.first() == movie1
 
     @pytest.mark.django_db
-    def test_movies_tommorow_queryset(self, city, movie1, movie2, movie3, movie4):
-        movies_tommorow = city.movies.movies_tommorow()
+    def test_movies_tomorrow_queryset(self, city, movie1, movie2, movie3, movie4):
+        movies_tomorrow = city.movies.movies_tomorrow()
 
-        assert movies_tommorow.count() == 3
-        assert movies_tommorow.first() == movie1
-        assert movies_tommorow[1] == movie2
-        assert movies_tommorow[2] == movie3
+        assert movies_tomorrow.count() == 3
+        assert movies_tomorrow.first() == movie1
+        assert movies_tomorrow[1] == movie2
+        assert movies_tomorrow[2] == movie3
 
     @pytest.mark.django_db
     def test_movies_soon_queryset(self, city, movie1, movie2, movie3, movie4):

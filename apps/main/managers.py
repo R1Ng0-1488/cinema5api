@@ -12,7 +12,7 @@ class AvailableSession(models.QuerySet):
             session__time__gte=now.time()
         ).distinct()
 
-    def movies_tommorow(self):
+    def movies_tomorrow(self):
         now = timezone.now()
         return self.filter(
             session__date=now.date() + timezone.timedelta(days=1), 
@@ -23,7 +23,7 @@ class AvailableSession(models.QuerySet):
         return self.filter(
             start_date__gt=now.date(),
             session__isnull=False 
-        )
+        ).distinct()
 
     def movies_date(self, date):
         now = timezone.now()
