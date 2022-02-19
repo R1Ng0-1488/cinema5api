@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView 
 
 from .utils import convert_date
 from .models import City, Movie

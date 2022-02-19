@@ -15,7 +15,7 @@ class City(models.Model):
     slug = models.SlugField('Ссылка', unique=True, 
         max_length=100)
     movies = models.ManyToManyField('Movie',
-        verbose_name='Фильмы')
+        verbose_name='Фильмы', null=True, blank=True)
     is_active = models.BooleanField('Активен', default=True)
     updated = models.DateTimeField(auto_now_add=True)
     created = models.DateTimeField(auto_now=True)
@@ -100,7 +100,7 @@ class Session(models.Model):
         ('3', 'IMAX')
     )
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE,
-        verbose_name='Фильм')
+        verbose_name='Фильм', related_name='sessions')
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE,
         verbose_name='Кинотеатр')
     format = models.CharField('Формат', choices=FORMAT_CHOICES,

@@ -5,7 +5,7 @@ from pytest_django import asserts
 from django.utils import timezone
 
 from apps.main.models import City, Movie, Session, Cinema
-
+from apps.main.serializers import MovieSerializer
 
 class TestCitiesView:
     
@@ -116,23 +116,7 @@ class TestMoviesView:
             )
         )
         assert len(response.json()) == movies.movies_today().count()
-        assert response.json() == [{
-            'id': i.id,
-            'name': i.name,
-            'age_limit': i.age_limit,
-            'country': i.country,
-            'ganres': i.ganres,
-            'director': i.director,
-            'poster': i.poster if i.poster else None,
-            'memorandum': i.memorandum,
-            'description': i.description,
-            'start_date': i.start_date.strftime('%Y-%m-%d'),
-            'premier': i.premier,
-            'carousel': i.carousel if i.carousel else None,
-            'trailer': i.trailer if i.trailer else None,
-            'is_active': i.is_active,
-        }
-        for i in movies.movies_today()]
+        assert response.json() == MovieSerializer(movies.movies_today(), many=True).data
 
     def test_get_movies_tomorrow(self, db, client, city1, movies):
         response = client.get(
@@ -145,23 +129,7 @@ class TestMoviesView:
             )
         )
         assert len(response.json()) == movies.movies_tomorrow().count()
-        assert response.json() == [{
-            'id': i.id,
-            'name': i.name,
-            'age_limit': i.age_limit,
-            'country': i.country,
-            'ganres': i.ganres,
-            'director': i.director,
-            'poster': i.poster if i.poster else None,
-            'memorandum': i.memorandum,
-            'description': i.description,
-            'start_date': i.start_date.strftime('%Y-%m-%d'),
-            'premier': i.premier,
-            'carousel': i.carousel if i.carousel else None,
-            'trailer': i.trailer if i.trailer else None,
-            'is_active': i.is_active,
-        }
-        for i in movies.movies_tomorrow()]
+        assert response.json() == MovieSerializer(movies.movies_tomorrow(), many=True).data
 
     def test_get_movies_soon(self, db, client, city1, movies):
         response = client.get(
@@ -174,23 +142,7 @@ class TestMoviesView:
             )
         )
         assert len(response.json()) == movies.movies_soon().count()
-        assert response.json() == [{
-            'id': i.id,
-            'name': i.name,
-            'age_limit': i.age_limit,
-            'country': i.country,
-            'ganres': i.ganres,
-            'director': i.director,
-            'poster': i.poster if i.poster else None,
-            'memorandum': i.memorandum,
-            'description': i.description,
-            'start_date': i.start_date.strftime('%Y-%m-%d'),
-            'premier': i.premier,
-            'carousel': i.carousel if i.carousel else None,
-            'trailer': i.trailer if i.trailer else None,
-            'is_active': i.is_active,
-        }
-        for i in movies.movies_soon()]
+        assert response.json() == MovieSerializer(movies.movies_soon(), many=True).data
 
     def test_get_movies_date(self, db, client, city1, movies):
         now = timezone.now()
@@ -205,23 +157,7 @@ class TestMoviesView:
             )
         )
         assert len(response.json()) == movies.movies_date(date=now).count()
-        assert response.json() == [{
-            'id': i.id,
-            'name': i.name,
-            'age_limit': i.age_limit,
-            'country': i.country,
-            'ganres': i.ganres,
-            'director': i.director,
-            'poster': i.poster if i.poster else None,
-            'memorandum': i.memorandum,
-            'description': i.description,
-            'start_date': i.start_date.strftime('%Y-%m-%d'),
-            'premier': i.premier,
-            'carousel': i.carousel if i.carousel else None,
-            'trailer': i.trailer if i.trailer else None,
-            'is_active': i.is_active,
-        }
-        for i in movies.movies_date(date=now)]
+        assert response.json() == MovieSerializer(movies.movies_date(date=now), many=True).data
 
     def test_with_wrong_parametr(self, db, client, city1):
         response = client.get(
