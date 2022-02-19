@@ -8,4 +8,6 @@ urlpatterns = [
     path('cities/', views.CitiesView.as_view(), name='cities'),
     path('movies/<slug:city>/<str:type>/', 
         views.MoviesView.as_view(), name='movies'),
+    path('movies/<slug:city>/<str:type>/<str:date>/', 
+        views.MoviesView.as_view(), name='movies_date'),
 ]

@@ -133,3 +133,116 @@ class TestMoviesView:
             'is_active': i.is_active,
         }
         for i in movies.movies_today()]
+
+    def test_get_movies_tomorrow(self, db, client, city1, movies):
+        response = client.get(
+            reverse(
+                'movies', 
+                kwargs={
+                    'city': city1.slug,
+                    'type': 'tomorrow',
+                }
+            )
+        )
+        assert len(response.json()) == movies.movies_tomorrow().count()
+        assert response.json() == [{
+            'id': i.id,
+            'name': i.name,
+            'age_limit': i.age_limit,
+            'country': i.country,
+            'ganres': i.ganres,
+            'director': i.director,
+            'poster': i.poster if i.poster else None,
+            'memorandum': i.memorandum,
+            'description': i.description,
+            'start_date': i.start_date.strftime('%Y-%m-%d'),
+            'premier': i.premier,
+            'carousel': i.carousel if i.carousel else None,
+            'trailer': i.trailer if i.trailer else None,
+            'is_active': i.is_active,
+        }
+        for i in movies.movies_tomorrow()]
+
+    def test_get_movies_soon(self, db, client, city1, movies):
+        response = client.get(
+            reverse(
+                'movies', 
+                kwargs={
+                    'city': city1.slug,
+                    'type': 'soon',
+                }
+            )
+        )
+        assert len(response.json()) == movies.movies_soon().count()
+        assert response.json() == [{
+            'id': i.id,
+            'name': i.name,
+            'age_limit': i.age_limit,
+            'country': i.country,
+            'ganres': i.ganres,
+            'director': i.director,
+            'poster': i.poster if i.poster else None,
+            'memorandum': i.memorandum,
+            'description': i.description,
+            'start_date': i.start_date.strftime('%Y-%m-%d'),
+            'premier': i.premier,
+            'carousel': i.carousel if i.carousel else None,
+            'trailer': i.trailer if i.trailer else None,
+            'is_active': i.is_active,
+        }
+        for i in movies.movies_soon()]
+
+    def test_get_movies_date(self, db, client, city1, movies):
+        now = timezone.now()
+        response = client.get(
+            reverse(
+                'movies_date', 
+                kwargs={
+                    'city': city1.slug,
+                    'type': 'soon',
+                    'date': now.strftime('%Y-%m-%d')
+                }
+            )
+        )
+        assert len(response.json()) == movies.movies_date(date=now).count()
+        assert response.json() == [{
+            'id': i.id,
+            'name': i.name,
+            'age_limit': i.age_limit,
+            'country': i.country,
+            'ganres': i.ganres,
+            'director': i.director,
+            'poster': i.poster if i.poster else None,
+            'memorandum': i.memorandum,
+            'description': i.description,
+            'start_date': i.start_date.strftime('%Y-%m-%d'),
+            'premier': i.premier,
+            'carousel': i.carousel if i.carousel else None,
+            'trailer': i.trailer if i.trailer else None,
+            'is_active': i.is_active,
+        }
+        for i in movies.movies_date(date=now)]
+
+    def test_with_wrong_parametr(self, db, client, city1):
+        response = client.get(
+            reverse(
+                'movies',
+                kwargs={
+                    'city': city1.slug,
+                    'type': 'kek',
+                }
+            )
+        )
+        assert response.json() == []
+
+    def test_with_wrong_city(self, db, client):
+        response = client.get(
+            reverse(
+                'movies',
+                kwargs={
+                    'city': 'Ordenburg',
+                    'type': 'kek',
+                }
+            )
+        )
+        assert response.json() == []
