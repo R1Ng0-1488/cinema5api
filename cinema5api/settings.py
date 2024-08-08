@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # 3-rd party
     'rest_framework',
+    'debug_toolbar',
     # locals
     'apps.main.apps.MainConfig',
 ]
@@ -51,6 +52,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'cinema5api.urls'
@@ -129,3 +131,9 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# debug_toolbar
+INTERNAL_IPS = ('localhost:8000', 'localhost', '0.0.0.0:8000', '0.0.0.0', '127.0.0.1')
+DEBUG_TOOLBAR_CONFIG = {
+  "SHOW_TOOLBAR_CALLBACK" : lambda s: True,
+}

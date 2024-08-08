@@ -1,4 +1,3 @@
-from urllib import response
 import pytest
 from django.urls import reverse
 from pytest_django import asserts
@@ -11,12 +10,15 @@ class TestCitiesView:
     
     @pytest.fixture
     def cities(self, db):
+
         City.objects.create(name='zero', slug='zero', is_active=False)
         for i in ('one', 'two', 'three'):
             City.objects.create(name=i, slug=i)
+        
         return City.objects.filter(is_active=True)
 
     def test_get_cities_return_200_status(self, db, client):
+        # try replace db with client
         response = client.get(reverse('cities'))
         assert response.status_code == 200
 
